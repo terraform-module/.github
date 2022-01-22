@@ -7,19 +7,8 @@ const dry_run = process.env.DRY_RUN || false
 console.log(`DRY_RUN mode: ${dry_run}`);
 
 if (!process.env.DOCKER_HUB_PASSWORD) {
-  throw new Error('DOCKER_HUB_PASSWORD must be set');
+  throw new Error('"DOCKER_HUB_PASSWORD" must be set');
 }
-
-const repo1 = [
-  'ivankatliarchuk/ivankatliarchuk.github.io',
-  'ivankatliarchuk/knowledge-base',
-  'ivankatliarchuk/dotfiles',
-]
-
-const repo = [
-  'ivankatliarchuk/.github',
-  'cloudkats/docker-tools'
-]
 
 module.exports = {
   "platform": "github",
@@ -41,23 +30,21 @@ module.exports = {
   "printConfig": false,
   "pruneStaleBranches": true,
   "username": "ivankatliarchuk",
+  // "repositories": JSON.parse(Fs.readFileSync(process.env.RENOVATE_REPOSITORY_CONFIG_FILE, 'utf8')),
   "repositories": repo,
   "prHourlyLimit": 50,
   "stabilityDays": 3,
   "semanticCommits": "enabled",
   "onboardingConfig": { "extends": ["github>ivankatliarchuk/.github"] },
-  "major": { "automerge": false, "labels": ["dependencies", "major"] },
-  "minor": { "automerge": false, "labels": ["dependencies", "minor"] },
-  "patch": { "automerge": false },
   // cache +
-  "cacheDir": process.env.RENOVATE_CACHE_DIR,
-  "repositoryCache": (process.env.RENOVATE_CACHE_DIR ? true : false),
+  // "cacheDir": process.env.RENOVATE_CACHE_DIR,
+  // "repositoryCache": (process.env.RENOVATE_CACHE_DIR ? true : false),
   // cache -
   "hostRules": [
     {
       "hostType": 'docker',
       "username": 'cloudkats',
-      "password": process.env.DOCKER_HUB_PASSWORD,
+      "password": process.env.RENOVATE_DOCKER_HUB_PASSWORD,
     },
   ],
   "packageRules": [
